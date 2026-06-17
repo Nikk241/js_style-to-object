@@ -7,24 +7,19 @@
  */
 function convertToObject(sourceString) {
   // write your code here
-  const result = {};
+  return sourceString
+    .split(';')
+    .filter((declaration) => declaration.trim())
+    .reduce(function (stylesObject, declaration) {
+      const trimmed = declaration.trim();
+      const coloneIndex = trimmed.indexOf(':');
 
-  const splitSourceString = sourceString.split(';');
+      const key = trimmed.slice(0, coloneIndex).trim();
+      const value = trimmed.slice(coloneIndex + 1).trim();
 
-  for (let i = 0; i < splitSourceString.length; i++) {
-    const valuesTrimmed = splitSourceString[i].trim();
+      stylesObject[key] = value;
 
-    if (!valuesTrimmed) {
-      continue;
-    }
-
-    const colonIndex = valuesTrimmed.indexOf(':');
-    const key = valuesTrimmed.slice(0, colonIndex).trim();
-    const value = valuesTrimmed.slice(colonIndex + 1).trim();
-
-    result[key] = value;
-  }
-
-  return result;
+      return stylesObject;
+    }, {});
 }
 module.exports = convertToObject;
